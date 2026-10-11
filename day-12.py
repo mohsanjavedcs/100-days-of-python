@@ -26,7 +26,7 @@ while not is_game_over:
         elif number > guess:
             print("Too low.")
             attempts -= 1
-        elif number < guess:
+        else:
             print("Too high.")
             attempts -= 1
     else:
