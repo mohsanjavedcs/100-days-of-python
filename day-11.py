@@ -47,7 +47,7 @@ def play_game():
         dealer_score = calculate_score(dealer_cards)
 
         print(f"Your cards: {player_cards}, current score: {player_score}")
-        print(f"Dealer's first card: {dealer_cards[0]}, current score: {dealer_score}")
+        print(f"Dealer's first card: {dealer_cards[0]}")
 
         if player_score == 0 or dealer_score == 0 or player_score > 21:
             is_game_over = True
