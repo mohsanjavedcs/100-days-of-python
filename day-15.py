@@ -32,12 +32,12 @@ resources = {
 
 def process_coins():
     print("Please insert coins!")
-    quarters = input("How many quarters? ")
-    dimes = input("How many dimes? ")
-    nickels = input("How many nickels? ")
-    pennies = input("How many pennies? ")
+    quarters = int(input("How many quarters? "))
+    dimes = int(input("How many dimes? "))
+    nickels = int(input("How many nickels? "))
+    pennies = int(input("How many pennies? "))
 
-    total_money = pennies + (nickels * 5) + (dimes  * 10) + (quarters * 25)
+    total_money = (pennies * 0.01) + (nickels * 0.05) + (dimes  * 0.1) + (quarters * 0.25)
 
     return total_money
 
@@ -46,49 +46,47 @@ def check_resources(input):
         if MENU[input]["ingredients"]["milk"] > resources["Milk"]:
             print("Sorry there is not enough milk.")
             return False
-        elif MENU[input]["ingredients"]["milk"] <= resources["Milk"]:
-            resources["Milk"] = resources["Milk"] - MENU[input]["ingredients"]["milk"]
     if MENU[input]["ingredients"]["water"] > resources["Water"]:
         print("Sorry there is not enough water.")
         return False
-    elif MENU[input]["ingredients"]["water"] <= resources["Water"]:
-        resources["Water"] = resources["Water"] - MENU[input]["ingredients"]["water"]
     if MENU[input]["ingredients"]["coffee"] > resources["Coffee"]:
         print("Sorry there is not enough coffee.")
         return False
-    elif MENU[input]["ingredients"]["coffee"] <= resources["Coffee"]:
-        resources["Coffee"] = resources["Coffee"] - MENU[input]["ingredients"]["coffee"]
-        return True
+    return True
+    
+def transaction_success(input):
+    if input == "cappuccino" or input == "latte":
+        resources["Milk"] = resources["Milk"] - MENU[input]["ingredients"]["milk"]
+    resources["Water"] = resources["Water"] - MENU[input]["ingredients"]["water"]
+    resources["Coffee"] = resources["Coffee"] - MENU[input]["ingredients"]["coffee"]
 
 profit = 0
 
 is_on = True
 
 while is_on:
-    input = input("What would you like? (espresso/latte/cappuccino): ").lower()
+    choice = input("What would you like? (espresso/latte/cappuccino): ").lower()
 
-    if input == "off":
+    if choice == "off":
         print("Goodbye!")
         is_on = False
-    elif input == "report":
+    elif choice == "report":
         for key, value in resources.items():
             if key != "Coffee":
                 print(f"{key}: {value}ml")
             else:
                 print(f"{key}: {value}g")
-        print(f"Money: ${profit}")
-    elif input == "espresso":
-        if check_resources(input):
+        print(f"Money: ${profit:.2f}")
+    elif choice in MENU:
+        if check_resources(choice):
             money = process_coins()
-            if money < MENU["espresso"]["cost"]:
-                print("Sorry that's not enough money. Money refunded.")
-                break
-            elif money >= MENU["espresso"]["cost"]:
-                profit += money
-
-    elif input == "latte":
-        pass
-    elif input == "cappuccino":
-        pass
+            if money < MENU[choice]["cost"]:
+                print(f"Sorry that's not enough money. ${money:.2f} refunded.")
+            elif money >= MENU[choice]["cost"]:
+                change = round(money - MENU[choice]["cost"], 2)
+                profit += MENU[choice]["cost"]
+                print(f"Here is your change: ${change}")
+                transaction_success(choice)
+                print(f"Here is your {choice}, Enjoy!")
     else:
         print("Invalid input, please try again!")
