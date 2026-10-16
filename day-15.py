@@ -30,14 +30,19 @@ resources = {
     "Coffee": 100,
 }
 
+coins = {
+    "quarters": 0.25,
+    "dimes": 0.10,
+    "nickels": 0.05,
+    'pennies': 0.01,
+}
+
 def process_coins():
     print("Please insert coins!")
-    quarters = int(input("How many quarters? "))
-    dimes = int(input("How many dimes? "))
-    nickels = int(input("How many nickels? "))
-    pennies = int(input("How many pennies? "))
-
-    total_money = (pennies * 0.01) + (nickels * 0.05) + (dimes  * 0.1) + (quarters * 0.25)
+    total_money = 0
+    for coin, value in coins.items():
+       money = int(input(f"How many {coin}? "))
+       total_money += (money * value)
 
     return total_money
 
