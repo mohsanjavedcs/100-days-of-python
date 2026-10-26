@@ -26,6 +26,13 @@ class Snake:
         segment.goto(position)
         self.segments.append(segment)
 
+    def reset(self):
+        for seg in self.segments:
+            seg.goto(1000, 1000)
+        self.segments.clear()
+        self.create_snake()
+        self.head = self.segments[0]
+
     def extend(self):
         self.add_segment(self.segments[-1].position())
 
@@ -74,20 +81,28 @@ class Scoreboard(Turtle):
         super().__init__()
         self.color("white")
         self.score = 0
+        with open("_data.txt") as data:
+            self.high_score = int(data.read())
         self.hideturtle()
         self.penup()
         self.goto(0, 260)
-        self.write(arg=f"Score: {self.score}", align="center", font=("Times New Roman", 20, "normal"))
+        self.update_scoreboard()
         
-    def game_over(self):
-        self.goto(0, 0)
-        self.write(arg=f"GAME OVER.", align="center", font=("Times New Roman", 20, "normal"))
-
+    def reset(self):
+        if self.score > self.high_score:
+            self.high_score = self.score
+            with open("_data.txt", mode="w") as data:
+                data.write(f"{self.high_score}")
+        self.score = 0
+        self.update_scoreboard()
+    
     def increase_score(self):
         self.score += 1
+        self.update_scoreboard()
+    
+    def update_scoreboard(self):
         self.clear()
-        self.write(arg=f"Score: {self.score}", align="center", font=("Times New Roman", 20, "normal"))
-
+        self.write(arg=f"Score: {self.score}, High Score: {self.high_score}", align="center", font=("Times New Roman", 20, "normal"))
 
 screen = Screen()
 screen.setup(width=600, height=600)
@@ -126,13 +141,13 @@ while game_is_on:
 
     # Detect Collosion with Wall
     if snake.head.xcor() > 280 or snake.head.xcor() < -280 or snake.head.ycor() > 280 or snake.head.ycor() < -280:
-        game_is_on = False
-        score.game_over()
+        score.reset()
+        snake.reset()
 
     #Detect Collosion with Tail
     for segment in snake.segments[1:]:
         if snake.head.distance(segment) < 10:
-            game_is_on = False
-            score.game_over()
+            score.reset()
+            snake.reset()
 
 screen.exitonclick()
