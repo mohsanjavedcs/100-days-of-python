@@ -1,25 +1,22 @@
-import turtle
 import pandas as pd
 
-df = pd.read_csv("50_states.csv")
+df = pd.read_csv("2018-Central-Park-Squirrel-Census-Squirrel-Data.csv")
 
-screen = turtle.Screen()
-screen.title("U.S. States Game")
-image = "_blank_states_img.gif"
-screen.addshape(image)
-turtle.shape(image)
+# print(df)
 
-guess_count = 0
+# print(df["Primary Fur Color"].value_counts())
 
-answer_state = screen.textinput(title=f"{guess_count}/50 States Correct", prompt="What's another state name?")
+data = pd.DataFrame()
 
-answer = df[df["state"] == answer_state]
-states = df["state"]
-x_cor = df["x"]
-y_cor = df["y"]
+grey = len(df[df["Primary Fur Color"] == "Gray"])
+red = len(df[df["Primary Fur Color"] == "Cinnamon"])
+black = len(df[df["Primary Fur Color"] == "Black"])
 
-for state in states:
-    if answer_state == state:
-        answer_x = answer["x"]
-        answer_y = answer["y"]
-        print(f"State: {state}, Cor:{answer_x},{answer_y}")
+data_dict = {
+    "Fur Color": ["Gray", "Cinnamon", "Black"],
+    "Count": [grey, red, black]
+}
+
+data = pd.DataFrame(data_dict)
+
+data.to_csv("Squirrel_Counts.csv")
