@@ -19,4 +19,4 @@ data_dict = {
 
 data = pd.DataFrame(data_dict)
 
-data.to_csv("Squirrel_Counts.csv")
+data.to_csv("_Squirrel_Counts.csv")
