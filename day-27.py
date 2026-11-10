@@ -15,12 +15,15 @@ window.configure(bg="pink")
 hours_label = Label(text="Hour(s)")
 hours_label.configure(bg="pink")
 hours_label.grid(column=2, row=0, sticky="nsew")
+
 is_equal_label = Label(text="is equal to")
 is_equal_label.configure(bg="pink")
 is_equal_label.grid(column=0, row=1, sticky="nsew")
+
 seconds_label = Label(text="Seconds")
 seconds_label.configure(bg="pink")
 seconds_label.grid(column=2, row=1, sticky="nsew")
+
 seconds_result_label = Label(text="0")
 seconds_result_label.configure(bg="pink")
 seconds_result_label.grid(column=1, row=1, sticky="nsew")
@@ -33,10 +36,6 @@ hours_input = Entry(width=7)
 hours_input.configure(bg="pink")
 hours_input.focus()
 hours_input.grid(column=1, row=0, sticky="nsew")
-
-
-
-
 
 
 
